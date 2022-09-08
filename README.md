@@ -1,4 +1,4 @@
-# Kotoba-Java
+# Kotoba
 
 A Dynamic & Colorful ASCII Console!
 - Text Input and Output
