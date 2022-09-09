@@ -1,5 +1,6 @@
 package kakkoiichris.kotoba
 
+import kakkoiichris.kotoba.util.blend
 import java.awt.image.BufferedImage
 import java.awt.image.DataBufferInt
 

@@ -1,4 +1,6 @@
-package kakkoiichris.kotoba
+package kakkoiichris.kotoba.util
+
+import kakkoiichris.kotoba.Glyph
 
 internal val Int.red get() = (this shr 16) and 0xFF
 
