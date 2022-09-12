@@ -1,5 +1,7 @@
 package kakkoiichris.kotoba
 
+import kotlin.math.sin
+
 class Glyph(internal val char: Char, private val effect: Effect, private val invert: Boolean) {
     private var color = 0
     private var offsetX = 0
@@ -43,7 +45,7 @@ class Glyph(internal val char: Char, private val effect: Effect, private val inv
             }
             
             override fun copy() =
-                this
+                Color(rgb)
         }
         
         class Cycle(private val speed: Double, private vararg val colors: Int) : Effect {
@@ -90,17 +92,21 @@ class Glyph(internal val char: Char, private val effect: Effect, private val inv
                 val id get() = _id++
             }
             
-            private var phase = 0.0
+            private val index = id
+            
+            private var theta = 0.0
             
             override fun apply(glyph: Glyph, delta: Double) {
+                val sine = (amplitude * sin(frequency * (theta - index))).toInt()
+                
                 if (vertical) {
-                    //glyph.offsetY = amplitude * sin()
+                    glyph.offsetY = sine
                 }
                 else {
-                
+                    glyph.offsetX = sine
                 }
                 
-                phase += speed * delta
+                theta += speed * delta
             }
             
             override fun copy() =
