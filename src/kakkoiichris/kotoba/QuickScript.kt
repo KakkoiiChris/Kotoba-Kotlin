@@ -41,7 +41,19 @@ class QuickScript(private val source: List<String>) {
                         }
                     }
                     
-                    "input"           -> vars[args[0]] = console.readLine() ?: error("INPUT FAIL")
+                    "input"           -> when (args.size) {
+                        1 -> vars[args[0]] = console.readLine() ?: error("INPUT 1 FAIL")
+                        
+                        2 -> {
+                            val (name, prompt) = args
+                            
+                            console.write(prompt)
+                            
+                            vars[name] = console.readLine() ?: error("INPUT 2 FAIL")
+                            
+                            console.writeLine()
+                        }
+                    }
                     
                     "invert"          -> console.invert = args[0].toBooleanStrictOrNull() ?: error("INVERT FAIL")
                     
@@ -188,11 +200,11 @@ class QuickScript(private val source: List<String>) {
                         rule.effect = rule.effect and effect
                     }
                     
-                    "rule_remove"->console.removeRules(args[0])
+                    "rule_remove"     -> console.removeRules(args[0])
                     
                     "rules"           -> console.rulesEnabled = args[0].toBooleanStrictOrNull() ?: error("RULES FAIL")
                     
-                    "rules_clear"->console.clearRules()
+                    "rules_clear"     -> console.clearRules()
                 }
             }
             else {
@@ -211,7 +223,12 @@ class QuickScript(private val source: List<String>) {
                 }
                 
                 if (newline) {
-                    console.writeLine(output)
+                    if (output.endsWith('\\')) {
+                        console.write(output.substringBeforeLast('\\'))
+                    }
+                    else {
+                        console.writeLine(output)
+                    }
                 }
                 else {
                     console.write(output)
