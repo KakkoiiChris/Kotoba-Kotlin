@@ -2,7 +2,7 @@ package kakkoiichris.kotoba
 
 import kotlin.math.sin
 
-class Glyph(internal val char: Char, private val effect: Effect, private val invert: Boolean) {
+class Glyph(internal val char: Char, private val invert: Boolean, private val effect: Effect) {
     private var color = 0
     private var offsetX = 0
     private var offsetY = 0
@@ -113,6 +113,12 @@ class Glyph(internal val char: Char, private val effect: Effect, private val inv
                 Wave(amplitude, frequency, speed, vertical)
         }
         
+        object None : Effect {
+            override fun apply(glyph: Glyph, delta: Double) = Unit
+            
+            override fun copy() = this
+        }
+        
         class Multi(vararg effects: Effect) : Effect {
             private val effects = mutableListOf<Effect>()
             
@@ -147,5 +153,5 @@ class Glyph(internal val char: Char, private val effect: Effect, private val inv
         fun copy(): Effect
     }
     
-    data class Rule(val name: String, val regex: Regex, val effect: Effect, val invert: Boolean)
+    data class Rule(val name: String, val regex: Regex, val invert: Boolean, var effect: Effect)
 }

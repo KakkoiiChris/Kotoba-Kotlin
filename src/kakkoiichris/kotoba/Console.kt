@@ -89,7 +89,13 @@ class Console(config: Config = Config()) {
     
     fun hasRule(name: String) = buffer.hasRule(name)
     
+    fun getRule(name:String) = buffer.getRule(name)
+    
+    fun getRuleOrNull(name:String) = buffer.getRuleOrNull(name)
+    
     fun removeRules(vararg names: String) = buffer.removeRules(*names)
+    
+    fun clearRules() = buffer.clearRules()
     
     fun clear() {
         if (closed) {
@@ -130,7 +136,7 @@ class Console(config: Config = Config()) {
             return null
         }
         
-        return buffer.read()
+        return buffer.readToken()
     }
     
     fun readLine(): String? {
@@ -138,7 +144,7 @@ class Console(config: Config = Config()) {
             return null
         }
         
-        return buffer.readText()
+        return buffer.readLine()
     }
     
     fun readOption(vararg options: String): String? {
@@ -155,7 +161,7 @@ class Console(config: Config = Config()) {
         do {
             buffer.write("> ")
             
-            val input = buffer.readText()
+            val input = buffer.readLine()
             
             if (input.toIntOrNull() == null) {
                 buffer.write("Please enter a number.\n")

@@ -32,5 +32,5 @@ internal fun millis() = System.currentTimeMillis()
 
 internal fun nanos() = System.nanoTime()
 
-internal fun String.toGlyphs(effect: Glyph.Effect, invert: Boolean) =
-    map { Glyph(it, effect, invert) }.toList()
+internal fun String.toGlyphs(invert: Boolean, effect: Glyph.Effect) =
+    map { Glyph(it, invert, effect) }.toList()

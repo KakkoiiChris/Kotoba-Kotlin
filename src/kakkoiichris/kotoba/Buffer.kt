@@ -118,11 +118,19 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
     fun hasRule(name: String) =
         name in rules.keys
     
+    fun getRule(name: String) =
+        rules[name]!!
+    
+    fun getRuleOrNull(name: String) =
+        rules[name]
+    
     fun removeRules(vararg names: String) {
         for (name in names) {
             rules.remove(name)
         }
     }
+    
+    fun clearRules() = rules.clear()
     
     fun clear() {
         outputLock.withLock {
@@ -143,7 +151,7 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
         return key
     }
     
-    fun read(): String {
+    fun readToken(): String {
         if (inputScanBuffer.isEmpty()) {
             inputWaiting = true
             
@@ -165,7 +173,7 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
         return token
     }
     
-    fun readText(): String {
+    fun readLine(): String {
         inputWaiting = true
         
         val line = inputQueue.take()
@@ -200,8 +208,8 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
         
         outputLock.withLock {
             for ((i, char) in string.withIndex()) {
-                var thisEffect = effect
                 var thisInvert = invert
+                var thisEffect = effect
                 
                 rules@ for ((rule, ranges) in matches) {
                     for (range in ranges) {
@@ -216,7 +224,7 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
                     }
                 }
                 
-                outputBuffer += Glyph(char, thisEffect.copy(), thisInvert)
+                outputBuffer += Glyph(char, thisInvert, thisEffect.copy())
             }
         }
     }
@@ -487,7 +495,7 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
     
     override fun keyTyped(e: KeyEvent) {
         if (inputWaiting) {
-            inputBuffer.add(Glyph(e.keyChar, effect.copy(), invert))
+            inputBuffer.add(Glyph(e.keyChar, invert, effect.copy()))
             
             blinkCursor()
         }
@@ -503,7 +511,7 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
                 if (e.keyCode == KeyEvent.VK_V && e.isControlDown) {
                     val text = Toolkit.getDefaultToolkit().systemClipboard.getData(DataFlavor.stringFlavor) as String
                     
-                    inputBuffer.addAll(text.toGlyphs(effect, invert))
+                    inputBuffer.addAll(text.toGlyphs(invert, effect))
                     
                     return
                 }
@@ -531,7 +539,7 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
                         input.clear()
                         inputIndex = 0
                         
-                        inputBuffer.addAll(inputHistory[inputHistoryIndex].toGlyphs(effect, invert))
+                        inputBuffer.addAll(inputHistory[inputHistoryIndex].toGlyphs(invert, effect))
                         
                         blinkCursor()
                     }
@@ -547,7 +555,7 @@ class Buffer(config: Console.Config) : Canvas(), Runnable, KeyListener, MouseWhe
                         input.clear()
                         inputIndex = 0
                         
-                        inputBuffer.addAll(inputHistory[inputHistoryIndex].toGlyphs(effect, invert))
+                        inputBuffer.addAll(inputHistory[inputHistoryIndex].toGlyphs(invert, effect))
                         
                         blinkCursor()
                     }
