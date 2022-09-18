@@ -222,13 +222,18 @@ class QuickScript(private val source: List<String>) {
                     output = matcher.replaceFirst(vars[name] ?: error("NO VAR FOR MATCHER"))
                 }
                 
-                if (newline) {
-                    if (output.endsWith('\\')) {
-                        console.write(output.substringBeforeLast('\\'))
-                    }
-                    else {
-                        console.writeLine(output)
-                    }
+                var isNewline = newline
+                
+                if (output.endsWith('\\') && !output.endsWith("\\\\")) {
+                    output = output.substringBeforeLast('\\')
+                    
+                    isNewline = true
+                }
+                
+                output = output.replace("\\\\", "\\")
+                
+                if (isNewline) {
+                    console.writeLine(output)
                 }
                 else {
                     console.write(output)
