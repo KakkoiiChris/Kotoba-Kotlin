@@ -1,7 +1,8 @@
 package kakkoiichris.kotoba.util
 
-import kakkoiichris.kotoba.util.json.JSON
 import kakkoiichris.kotoba.Font
+import kakkoiichris.kotoba.QuickScript
+import kakkoiichris.kotoba.util.json.JSON
 import java.io.File
 
 /**
@@ -38,6 +39,12 @@ class Resources(rootPath: String) {
     fun getJSONOrNull(name: String) =
         cd.getJSONOrNull(name)
     
+    fun getQuickScript(name: String) =
+        cd.getQuickScript(name)
+    
+    fun getQuickScriptOrNull(name: String) =
+        cd.getQuickScriptOrNull(name)
+    
     fun getTXT(name: String) =
         cd.getTXT(name)
     
@@ -72,6 +79,7 @@ class Resources(rootPath: String) {
         private val fonts = mutableMapOf<String, Font>()
         private val csvFiles = mutableMapOf<String, CSV>()
         private val jsonFiles = mutableMapOf<String, JSON>()
+        private val kqFiles = mutableMapOf<String, QuickScript>()
         private val txtFiles = mutableMapOf<String, TXT>()
         private val xmlFiles = mutableMapOf<String, XML>()
         private val subFolders = mutableMapOf<String, Folder>()
@@ -93,6 +101,8 @@ class Resources(rootPath: String) {
                     "csv"  -> csvFiles[resourceName] = CSV(resourcePath).apply { readResource() }
                     
                     "json" -> jsonFiles[resourceName] = JSON(resourcePath).apply { readResource() }
+                    
+                    "kq"   -> kqFiles[resourceName] = QuickScript(TXT(resourcePath).apply { readResource() }.lines)
                     
                     "txt"  -> txtFiles[resourceName] = TXT(resourcePath).apply { readResource() }
                     
@@ -122,6 +132,12 @@ class Resources(rootPath: String) {
         
         fun getJSONOrNull(name: String) =
             jsonFiles[name]
+    
+        fun getQuickScript(name: String) =
+            kqFiles[name] ?: error("QuickScript file '$path/$name' does not exist!")
+    
+        fun getQuickScriptOrNull(name: String) =
+            kqFiles[name]
         
         fun getTXT(name: String) =
             txtFiles[name] ?: error("Text file '$path/$name' does not exist!")
