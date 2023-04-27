@@ -1,6 +1,7 @@
 package kakkoiichris.kotoba
 
 import kakkoiichris.kotoba.util.blend
+import kakkoiichris.kotoba.util.inverse
 import java.awt.image.BufferedImage
 import java.awt.image.DataBufferInt
 
@@ -8,6 +9,10 @@ class Raster(image: BufferedImage) {
     private val pixels = (image.raster.dataBuffer as DataBufferInt).data
     private val width = image.width
     private val height = image.height
+    
+    fun clear(c: Int) {
+        pixels.fill(c)
+    }
     
     operator fun get(x: Int, y: Int) =
         if (x in 0 until width && y in 0 until height)
@@ -38,12 +43,8 @@ class Raster(image: BufferedImage) {
                 
                 if (xx < 0 || xx >= width) continue
                 
-                pixels[xx + yy * width] = 0xFFFFFF - pixels[xx + yy * width]
+                pixels[xx + yy * width] = pixels[xx + yy * width].inverse
             }
         }
-    }
-    
-    fun clear(c: Int) {
-        pixels.fill(c)
     }
 }

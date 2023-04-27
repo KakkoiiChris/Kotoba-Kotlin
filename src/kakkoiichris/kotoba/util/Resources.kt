@@ -19,58 +19,58 @@ import java.io.File
 class Resources(rootPath: String) {
     private val root = Folder(rootPath)
     
-    private var cd = root
+    private var current = root
     
     fun getFont(name: String) =
-        cd.getFont(name)
+        current.getFont(name)
     
     fun getFontOrNull(name: String) =
-        cd.getFontOrNull(name)
+        current.getFontOrNull(name)
     
     fun getCSV(name: String) =
-        cd.getCSV(name)
+        current.getCSV(name)
     
     fun getCSVOrNull(name: String) =
-        cd.getCSVOrNull(name)
+        current.getCSVOrNull(name)
     
     fun getJSON(name: String) =
-        cd.getJSON(name)
+        current.getJSON(name)
     
     fun getJSONOrNull(name: String) =
-        cd.getJSONOrNull(name)
+        current.getJSONOrNull(name)
     
     fun getQuickScript(name: String) =
-        cd.getQuickScript(name)
+        current.getQuickScript(name)
     
     fun getQuickScriptOrNull(name: String) =
-        cd.getQuickScriptOrNull(name)
+        current.getQuickScriptOrNull(name)
     
     fun getTXT(name: String) =
-        cd.getTXT(name)
+        current.getTXT(name)
     
     fun getTXTOrNull(name: String) =
-        cd.getTXTOrNull(name)
+        current.getTXTOrNull(name)
     
     fun getXML(name: String) =
-        cd.getXML(name)
+        current.getXML(name)
     
     fun getXMLOrNull(name: String) =
-        cd.getXMLOrNull(name)
+        current.getXMLOrNull(name)
     
     fun getFolder(name: String) =
-        cd.getFolder(name)
+        current.getFolder(name)
     
     fun getFolderOrNull(name: String) =
-        cd.getFolderOrNull(name)
+        current.getFolderOrNull(name)
     
     fun goBack(): Boolean {
-        cd = cd.parent ?: return false
+        current = current.parent ?: return false
         
         return true
     }
     
     fun goTo(name: String): Boolean {
-        cd = cd.getFolderOrNull(name) ?: return false
+        current = current.getFolderOrNull(name) ?: return false
         
         return true
     }

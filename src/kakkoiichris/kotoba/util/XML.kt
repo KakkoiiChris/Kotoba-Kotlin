@@ -9,15 +9,15 @@ import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
 class XML(private val filePath: String) {
-    lateinit var doc: Document; private set
+    lateinit var document: Document; private set
     
     fun readResource(): Boolean {
         try {
             val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
             
-            doc = builder.parse(javaClass.getResourceAsStream(filePath))
+            document = builder.parse(javaClass.getResourceAsStream(filePath))
             
-            doc.normalize()
+            document.normalize()
         }
         catch (e: Exception) {
             e.printStackTrace()
@@ -32,9 +32,9 @@ class XML(private val filePath: String) {
         try {
             val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
             
-            doc = builder.parse(FileInputStream(File(filePath)))
+            document = builder.parse(FileInputStream(File(filePath)))
             
-            doc.normalize()
+            document.normalize()
         }
         catch (e: Exception) {
             e.printStackTrace()
@@ -49,7 +49,7 @@ class XML(private val filePath: String) {
         try {
             val transformer = TransformerFactory.newInstance().newTransformer()
             
-            val source = DOMSource(doc)
+            val source = DOMSource(document)
             
             val result = StreamResult(File(filePath))
             

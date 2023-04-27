@@ -18,6 +18,7 @@ import java.awt.Image
 import java.awt.event.KeyEvent
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
+import java.util.*
 import javax.imageio.ImageIO
 
 class Console(config: Config = Config()) {
@@ -26,6 +27,9 @@ class Console(config: Config = Config()) {
     private val buffer = Buffer(config)
     
     private var closed = true
+    
+    private val promptStack = Stack<String>()
+    var prompt: String; private set
     
     var title by frame::title
     
@@ -59,6 +63,32 @@ class Console(config: Config = Config()) {
                 close()
             }
         })
+        
+        prompt = config.prompt
+    }
+    
+    fun pushPrompt(prompt: String?) {
+        promptStack.push(prompt)
+        
+        this.prompt = java.lang.String.join("", promptStack)
+    }
+    
+    fun popPrompt() {
+        if (!promptStack.isEmpty()) {
+            promptStack.pop()
+        }
+        
+        prompt = promptStack.joinToString(separator = "")
+    }
+    
+    fun setPrompt(prompt: String?) {
+        if (!promptStack.isEmpty()) {
+            promptStack.pop()
+        }
+        
+        promptStack.push(prompt)
+        
+        this.prompt = promptStack.joinToString(separator = "")
     }
     
     fun open() {
@@ -89,9 +119,9 @@ class Console(config: Config = Config()) {
     
     fun hasRule(name: String) = buffer.hasRule(name)
     
-    fun getRule(name:String) = buffer.getRule(name)
+    fun getRule(name: String) = buffer.getRule(name)
     
-    fun getRuleOrNull(name:String) = buffer.getRuleOrNull(name)
+    fun getRuleOrNull(name: String) = buffer.getRuleOrNull(name)
     
     fun removeRules(vararg names: String) = buffer.removeRules(*names)
     
@@ -220,8 +250,9 @@ class Console(config: Config = Config()) {
         val frameRate: Double = 60.0,
         val scrollSpeed: Double = 0.25,
         val scrollAmount: Int = 1,
-        val scrollBarWidth:Int = 8,
+        val scrollBarWidth: Int = 8,
         val cursorSpeed: Double = 0.5,
         val inputDelimiter: String = " ",
+        val prompt: String = "",
     )
 }
