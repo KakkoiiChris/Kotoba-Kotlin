@@ -106,7 +106,7 @@ class CSV(private val filePath: String) {
         val dataWithoutHeader get() = data.drop(1)
         
         override fun toString() = data.joinToString(separator = ",") {
-            var s = it.toString()
+            var s = it
             
             if (',' in s) {
                 s = if ('\'' in s) {

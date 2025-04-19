@@ -1,0 +1,6 @@
+img id=test, w=2, h=2 {
+    █FF0000 █00FF00
+    █0000FF █FFFFFF
+}
+
+pat img=test, xc=10, yc=10;

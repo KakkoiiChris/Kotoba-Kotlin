@@ -76,7 +76,7 @@ class Font(path: String) {
         for (char in firstChar..0xFF.toChar()) {
             val values = mutableListOf<Double>()
             
-            val width = characterWidths[char.toInt()]
+            val width = characterWidths[char.code]
             
             values += width.toDouble()
             

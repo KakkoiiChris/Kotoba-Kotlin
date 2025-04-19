@@ -24,44 +24,23 @@ class Resources(rootPath: String) {
     fun getFont(name: String) =
         current.getFont(name)
     
-    fun getFontOrNull(name: String) =
-        current.getFontOrNull(name)
-    
     fun getCSV(name: String) =
         current.getCSV(name)
-    
-    fun getCSVOrNull(name: String) =
-        current.getCSVOrNull(name)
     
     fun getJSON(name: String) =
         current.getJSON(name)
     
-    fun getJSONOrNull(name: String) =
-        current.getJSONOrNull(name)
-    
     fun getQuickScript(name: String) =
         current.getQuickScript(name)
-    
-    fun getQuickScriptOrNull(name: String) =
-        current.getQuickScriptOrNull(name)
     
     fun getTXT(name: String) =
         current.getTXT(name)
     
-    fun getTXTOrNull(name: String) =
-        current.getTXTOrNull(name)
-    
     fun getXML(name: String) =
         current.getXML(name)
     
-    fun getXMLOrNull(name: String) =
-        current.getXMLOrNull(name)
-    
     fun getFolder(name: String) =
         current.getFolder(name)
-    
-    fun getFolderOrNull(name: String) =
-        current.getFolderOrNull(name)
     
     fun goBack(): Boolean {
         current = current.parent ?: return false
@@ -69,10 +48,8 @@ class Resources(rootPath: String) {
         return true
     }
     
-    fun goTo(name: String): Boolean {
-        current = current.getFolderOrNull(name) ?: return false
-        
-        return true
+    fun goTo(name: String) {
+        current = current.getFolder(name)
     }
     
     class Folder(private val path: String, val parent: Folder? = null) {
@@ -118,43 +95,22 @@ class Resources(rootPath: String) {
         fun getFont(name: String) =
             fonts[name] ?: error("Font '$path/$name' does not exist!")
         
-        fun getFontOrNull(name: String) =
-            fonts[name]
-        
         fun getCSV(name: String) =
             csvFiles[name] ?: error("CSV file '$path/$name' does not exist!")
         
-        fun getCSVOrNull(name: String) =
-            csvFiles[name]
-        
         fun getJSON(name: String) =
             jsonFiles[name] ?: error("JSON file '$path/$name' does not exist!")
-        
-        fun getJSONOrNull(name: String) =
-            jsonFiles[name]
     
         fun getQuickScript(name: String) =
             kqFiles[name] ?: error("QuickScript file '$path/$name' does not exist!")
-    
-        fun getQuickScriptOrNull(name: String) =
-            kqFiles[name]
         
         fun getTXT(name: String) =
             txtFiles[name] ?: error("Text file '$path/$name' does not exist!")
         
-        fun getTXTOrNull(name: String) =
-            txtFiles[name]
-        
         fun getXML(name: String) =
             xmlFiles[name] ?: error("XML file '$path/$name' does not exist!")
         
-        fun getXMLOrNull(name: String) =
-            xmlFiles[name]
-        
         fun getFolder(name: String) =
             subFolders[name] ?: error("Folder '$path/$name' does not exist!")
-        
-        fun getFolderOrNull(name: String) =
-            subFolders[name]
     }
 }
